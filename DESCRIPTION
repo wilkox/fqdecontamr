@@ -1,4 +1,4 @@
-Package: decontamr
+Package: fqdecontamr
 Title: Remove contaminant reads from fastq files
 Version: 0.0.0.9000
 Authors@R: 
@@ -12,3 +12,5 @@ Description: Given a list of contaminant taxa identified by the decontam
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    taxonomizr (>= 0.5.1)
