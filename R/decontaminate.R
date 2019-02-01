@@ -15,7 +15,7 @@ decontaminate <- function(fastq_file, bowtie_file, decontam_file, out_file) {
 
   # Load reads from the bowtie output
   message("Loading bowtie output...")
-  reads <- readr::read_tsv(bowtie_file, col_names = c("read", "ref"))
+  reads <- readr::read_tsv(bowtie_file, col_names = c("read", "ref"), col_types = "cc")
 
   # Check that reads are unique
   if (! length(unique(reads$read)) == nrow(reads)) {
@@ -44,7 +44,7 @@ decontaminate <- function(fastq_file, bowtie_file, decontam_file, out_file) {
 
   # Check that all the contaminant species are known in `ref_to_tax`
   if (! all(contaminants$Species %in% ref_to_tax$species)) {
-    message("NOTE: These contaminant species are unknown and will not be removed")
+    message("--> The following contaminant species are unknown and will not be removed:")
     print(contaminants[! contaminants$Species %in% ref_to_tax$species, ]$Species)
   }
 
@@ -57,18 +57,18 @@ decontaminate <- function(fastq_file, bowtie_file, decontam_file, out_file) {
 
   # Identify reads to be removed
   message("Identifying contaminant reads...")
-  removed_reads <- as.character(id(fastq)[id(fastq) %in% reads$read, ])
+  removed_reads <- as.character(ShortRead::id(fastq))[as.character(ShortRead::id(fastq)) %in% reads$read]
 
   # Remove contaminant reads
   message("Filtering fastq...")
-  fastq <- fastq[! id(fastq) %in% reads$read, ]
+  fastq <- fastq[! as.character(ShortRead::id(fastq)) %in% removed_reads, ]
 
   # Write fastq to file
   message("Writing filtered fastq...")
-  ShortRead::writeFastq(fastq, out_file)
+  ShortRead::writeFastq(fastq, out_file, compress = FALSE)
 
   # Compile list of removed reads and return
-  removed_reads <- reads[reads$read %in% removed_reads, ]
+  removed_reads <- tibble::as_tibble(reads[reads$read %in% removed_reads, ])
 
   removed_reads
 }
