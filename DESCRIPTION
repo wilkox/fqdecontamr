@@ -1,0 +1,14 @@
+Package: decontamr
+Title: Remove contaminant reads from fastq files
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "David",
+           family = "Wilkins",
+           role = c("aut", "cre"),
+           email = "david@wilkox.org")
+Description: Given a list of contaminant taxa identified by the decontam
+  software, and taxonomic annotations provided by MetaPhlAn2, this package can
+  remove the reads belonging to contaminant taxa from a fastq or set of fastqs.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
