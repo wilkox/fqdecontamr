@@ -1,25 +1,21 @@
 #' Remove contaminant reads from a fastq file
 #'
+#' @param fastq_file Path to the fastq file to be filtered. Can be in '.gz'
+#' compressed format
 #' @param bowtie_file Path to bowtie2 output. Can be in '.bz2' compressed format
 #' @param decontam_file Path to decontam output, in .xlsx format
+#' @param out_file Path to which the filtered fastq should be written
 #'
+#' @return Returns a [tibble][tibble::tibble-package] of reads that have been
+#' removed and their taxonomic assignments
+#'
+#' @importFrom tibble tibble
 #' @export
-
-bowtie_file <- "~/Downloads/residential_forensic_data/SL342550_metagenome.bowtie2.bz2"
-decontam_file <- "~/temporal_dynamics_project/contaminants/decontam_contam_default_neg_removed.xlsx"
-fastq_file <- "~/tmp/SL342550_1_kneaddata_paired_1.fastq"
-out_file <- "~/tmp/filtered.fastq"
-
 decontaminate <- function(fastq_file, bowtie_file, decontam_file, out_file) {
 
   # Load reads from the bowtie output
-  reads <- read.delim(
-    bowtie_file,
-    header = FALSE,
-    sep = "\t",
-    col.names = c("read", "ref"),
-    stringsAsFactors = FALSE
-  )
+  message("Loading bowtie output...")
+  reads <- readr::read_tsv(bowtie_file, col_names = c("read", "ref"))
 
   # Check that reads are unique
   if (! length(unique(reads$read)) == nrow(reads)) {
@@ -35,6 +31,7 @@ decontaminate <- function(fastq_file, bowtie_file, decontam_file, out_file) {
   reads <- merge(reads, ref_to_tax, by = "ref", all.x = TRUE)
 
   # Load the decontam output
+  message("Loading decontam output...")
   contaminants <- readxl::read_excel(decontam_file)
 
   # Check that the decontam file is in the expected format
@@ -52,18 +49,22 @@ decontaminate <- function(fastq_file, bowtie_file, decontam_file, out_file) {
   }
 
   # Select only reads to be removed
+  message("Loading fastq...")
   reads <- reads[reads$species %in% contaminants$Species, ]
 
   # Load the fastq file
   fastq <- ShortRead::readFastq(fastq_file)
 
   # Identify reads to be removed
+  message("Identifying contaminant reads...")
   removed_reads <- as.character(id(fastq)[id(fastq) %in% reads$read, ])
 
   # Remove contaminant reads
+  message("Filtering fastq...")
   fastq <- fastq[! id(fastq) %in% reads$read, ]
 
   # Write fastq to file
+  message("Writing filtered fastq...")
   ShortRead::writeFastq(fastq, out_file)
 
   # Compile list of removed reads and return

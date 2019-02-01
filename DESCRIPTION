@@ -13,6 +13,11 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    taxonomizr (>= 0.5.1)
+    taxonomizr (>= 0.5.1),
+    readr,
+    readxl,
+    ShortRead,
+    tibble
 URL: https://github.com/wilkox/fqdecontamr
 BugReports: https://github.com/wilkox/fqdecontamr/issues
+RoxygenNote: 6.1.1
