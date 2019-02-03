@@ -13,6 +13,11 @@
 #' @export
 decontaminate <- function(fastq_file, bowtie_file, decontam_file, out_file) {
 
+  # Stop if out file exists
+  if (fs::file_exists(out_file)) {
+    stop(out_file, " already exists")
+  }
+
   # Load reads from the bowtie output
   message("Loading bowtie output...")
   reads <- readr::read_tsv(bowtie_file, col_names = c("read", "ref"), col_types = "cc")

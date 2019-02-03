@@ -1,6 +1,6 @@
 Package: fqdecontamr
 Title: Remove contaminant reads from fastq files
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person(given = "David",
            family = "Wilkins",
@@ -17,7 +17,8 @@ Imports:
     readr,
     readxl,
     ShortRead,
-    tibble
+    tibble,
+    fs
 URL: https://github.com/wilkox/fqdecontamr
 BugReports: https://github.com/wilkox/fqdecontamr/issues
 RoxygenNote: 6.1.1
