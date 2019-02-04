@@ -612,7 +612,7 @@ body {
 <li>The fastq file you want to filter (gzip compressed files are accepted)</li>
 </ul>
 <p>The main function provided by fqdecontamr is called <code>decontaminate()</code>. It takes as arguments the paths to the three input files listed above (<code>bowtie_file</code>, <code>decontam_file</code> and <code>fastq_file</code>), and a fourth argument giving the path for the filtered fastq file. As output, it produces a <a href="https://tibble.tidyverse.org">tibble</a> listing the reads that were removed.</p>
-<p>To map NCBI references to species names, fqdecontamr uses a built-in dataset (<code>ref_to_tax</code>) derived from the <code>markers_info.txt.bz2</code> file distributed with MetaPhlAn2. The current version of this dataset is derived from MetaPhlAn2 version 2.2.0. This dataset is quite big, which is why fqdecontamr can take a while to load.</p>
+<p>To map NCBI references to species names, fqdecontamr uses a built-in dataset (<code>tax_accession</code>) derived from the <code>markers_info.txt.bz2</code> file distributed with MetaPhlAn2. The current version of this dataset is derived from MetaPhlAn2 version 2.2.0. This dataset is quite big, which is why fqdecontamr can take a while to load.</p>
 
 </body>
 </html>

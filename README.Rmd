@@ -42,7 +42,7 @@ the filtered fastq file. As output, it produces a
 [tibble](https://tibble.tidyverse.org) listing the reads that were removed.
 
 To map NCBI references to species names, fqdecontamr uses a built-in dataset
-(`ref_to_tax`) derived from the `markers_info.txt.bz2` file distributed with
+(`tax_accession`) derived from the `markers_info.txt.bz2` file distributed with
 MetaPhlAn2. The current version of this dataset is derived from MetaPhlAn2
 version 2.2.0. This dataset is quite big, which is why fqdecontamr can take a
 while to load.
