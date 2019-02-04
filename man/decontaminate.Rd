@@ -4,15 +4,16 @@
 \alias{decontaminate}
 \title{Remove contaminant reads from a fastq file}
 \usage{
-decontaminate(fastq_file, bowtie_file, decontam_file, out_file)
+decontaminate(fastq_file, decontam_file, index_dir, out_file)
 }
 \arguments{
 \item{fastq_file}{Path to the fastq file to be filtered. Can be in '.gz'
 compressed format}
 
-\item{bowtie_file}{Path to bowtie2 output. Can be in '.bz2' compressed format}
-
 \item{decontam_file}{Path to decontam output, in .xlsx format}
+
+\item{index_dir}{Directory in which to store the downloaded genomes and bowtie2
+indices}
 
 \item{out_file}{Path to which the filtered fastq should be written}
 }

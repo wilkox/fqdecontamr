@@ -1,56 +1,54 @@
 #' Remove contaminant reads from a fastq file
 #'
+#' @param decontam_file Path to decontam output, in .xlsx format
 #' @param fastq_file Path to the fastq file to be filtered. Can be in '.gz'
 #' compressed format
-#' @param bowtie_file Path to bowtie2 output. Can be in '.bz2' compressed format
-#' @param decontam_file Path to decontam output, in .xlsx format
 #' @param out_file Path to which the filtered fastq should be written
+#' @param index_dir Directory in which to store downloaded genomes and bowtie2
+#' indices
 #'
 #' @return Returns a [tibble][tibble::tibble-package] of reads that have been
 #' removed and their taxonomic assignments
 #'
 #' @importFrom tibble tibble
 #' @export
-decontaminate <- function(fastq_file, bowtie_file, decontam_file, out_file) {
+decontaminate <- function(fastq_file, decontam_file, index_dir, out_file) {
+
+  # Load and tidy the decontam output
+  message("Loading decontam output...")
+  contaminants <- readxl::read_excel(decontam_file)
+  if (! all(names(contaminants) == c(
+    "Species",
+    "freq",
+    "prev",
+    "p.freq",
+    "p.prev",
+    "p",
+    "contaminant"
+  ))) {
+    stop("decontam file ", decontam_file, " is not in the expected format")
+  }
+  contaminants <- contaminants[contaminants$contaminant, "Species"]
+  contaminants <- dplyr::select(contaminants, species = Species)
+
+  # Prepare bowtie2 indices for contaminant genomes
+  message("Preparing bowtie2 indices...")
+  contaminants <- prepare_bowtie_indices(contaminants, index_dir)
+
+  # Get list of reads that align against each contaminant genome
+  message("Aligning reads...")
+  contaminant_reads <- purrr::map2(
+    contaminants[contaminants$index_built, ]$download_dir,
+    contaminants[contaminants$index_built, ]$species,
+    ~ aligning_reads(fastq_file, fs::path(.x, .y))
+  )
+  contaminant_reads <- purrr::set_names(contaminant_reads, contaminants$species)
+
+  stop()
 
   # Stop if out file exists
   if (fs::file_exists(out_file)) {
     stop(out_file, " already exists")
-  }
-
-  # Load reads from the bowtie output
-  message("Loading bowtie output...")
-  reads <- readr::read_tsv(bowtie_file, col_names = c("read", "ref"), col_types = "cc")
-
-  # Check that reads are unique
-  if (! length(unique(reads$read)) == nrow(reads)) {
-    warning("Non-unique reads in ", file)
-  }
-
-  # Check that all taxonomic references are in `ref_to_tax`
-  if (! all(reads$ref %in% ref_to_tax$ref)) {
-    warning("The bowtie2 file contains some unknown sequence references")
-  }
-
-  # Merge in the taxonomic assignments
-  reads <- merge(reads, ref_to_tax, by = "ref", all.x = TRUE)
-
-  # Load the decontam output
-  message("Loading decontam output...")
-  contaminants <- readxl::read_excel(decontam_file)
-
-  # Check that the decontam file is in the expected format
-  if (! all(names(contaminants) == c("Species", "freq", "prev", "p.freq", "p.prev", "p", "contaminant"))) {
-    stop("decontam file ", decontam_file, " is not in the expected format")
-  }
-
-  # Select only the contaminant species
-  contaminants <- contaminants[contaminants$contaminant, ]
-
-  # Check that all the contaminant species are known in `ref_to_tax`
-  if (! all(contaminants$Species %in% ref_to_tax$species)) {
-    message("--> The following contaminant species are unknown and will not be removed:")
-    print(contaminants[! contaminants$Species %in% ref_to_tax$species, ]$Species)
   }
 
   # Select only reads to be removed
