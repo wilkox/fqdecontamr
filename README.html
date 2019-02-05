@@ -605,14 +605,12 @@ body {
 <p>You can install the development version of fqdecontamr from <a href="https://github.com/wilkox/fqdecontamr">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;wilkox/fqdecontamr&quot;</span>)</a></code></pre></div>
 <h2 id="how-to-use">How to use</h2>
-<p>fqdecontamr requires three input files:</p>
+<p>fqdecontamr requires two input files:</p>
 <ul>
-<li>The bowtie2 output produced by <a href="http://huttenhower.sph.harvard.edu/metaphlan2">MetaPhlAn2</a>, which maps reads to NCBI references (bzip2 compressed files are accepted)</li>
 <li>The decontam output, in the form of a Microsoft Excel spreadsheet (<code>*.xlsx</code>)</li>
 <li>The fastq file you want to filter (gzip compressed files are accepted)</li>
 </ul>
-<p>The main function provided by fqdecontamr is called <code>decontaminate()</code>. It takes as arguments the paths to the three input files listed above (<code>bowtie_file</code>, <code>decontam_file</code> and <code>fastq_file</code>), and a fourth argument giving the path for the filtered fastq file. As output, it produces a <a href="https://tibble.tidyverse.org">tibble</a> listing the reads that were removed.</p>
-<p>To map NCBI references to species names, fqdecontamr uses a built-in dataset (<code>tax_accession</code>) derived from the <code>markers_info.txt.bz2</code> file distributed with MetaPhlAn2. The current version of this dataset is derived from MetaPhlAn2 version 2.2.0. This dataset is quite big, which is why fqdecontamr can take a while to load.</p>
+<p>The main function provided by fqdecontamr is called <code>decontaminate()</code>. It takes as arguments the paths to the two input files listed above ( <code>decontam_file</code> and <code>fastq_file</code>), a third argument <code>index_dir</code> specifying a directory in which to cache downloaded genomes and bowtie2 index files, and a fourth argument <code>out_file</code> specifying where to write the filtered fastq file. <code>decontaminate()</code> returns a <a href="https://tibble.tidyverse.org">tibble</a> listing the reads that were removed and the contaminant species to which they aligned.</p>
 
 </body>
 </html>

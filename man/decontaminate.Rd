@@ -12,7 +12,7 @@ compressed format}
 
 \item{decontam_file}{Path to decontam output, in .xlsx format}
 
-\item{index_dir}{Directory in which to store the downloaded genomes and bowtie2
+\item{index_dir}{Directory in which to store downloaded genomes and bowtie2
 indices}
 
 \item{out_file}{Path to which the filtered fastq should be written}

@@ -1,3 +1,10 @@
+# v0.0.0.9002
+
+# Major changes
+
+- Change approach to use bowtie2 alignments against reference contaminant
+  genomes
+
 # v0.0.0.9001
 
 ## Bug fixes
@@ -7,4 +14,4 @@
 
 # fqdecontamr 0.0.0.9000
 
-* Added a `NEWS.md` file to track changes to the package.
+- Added a `NEWS.md` file to track changes to the package.
