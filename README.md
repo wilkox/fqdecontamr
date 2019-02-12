@@ -1,4 +1,6 @@
 
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
 fqdecontamr filters fastq files to remove reads identified as potential
 contaminants by [decontam](https://benjjneb.github.io/decontam/).
 
