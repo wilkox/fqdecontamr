@@ -1,3 +1,9 @@
+# v0.0.0.9003
+
+# Major changes
+
+- Add check to genome downloading to prevent re-attempting failed downloads
+
 # v0.0.0.9002
 
 # Major changes

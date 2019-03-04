@@ -25,6 +25,13 @@ download_genome <- function(species, index_dir) {
   # If the directory already exists
   if (fs::dir_exists(contaminant$dir)) {
 
+    # Check whether the genome was not available on previous attempts
+    if (fs::file_exists(fs::path(contaminant$dir, "not_available"))) {
+      contaminant$fasta_path <- NA
+      message(contaminant$species, " not available on previous download attempt, skipping")
+      return(contaminant)
+    }
+
     # Try to find fasta file
     fasta_path <- list.files(contaminant$dir, pattern ="\\.fna\\.gz")
 
@@ -53,6 +60,8 @@ download_genome <- function(species, index_dir) {
   if (fasta_path == "Not available") {
     message("Download failed for ", contaminant$species)
     contaminant$fasta_path <- NA
+    fs::dir_create(contaminant$dir)
+    fs::file_create(fs::path(contaminant$dir, "not_available"))
     return(contaminant)
   }
 
