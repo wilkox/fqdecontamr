@@ -1,3 +1,9 @@
+# v0.0.0.9004
+
+# Major changes
+
+- Add threads argument to control number of threads used by bowtie2
+
 # v0.0.0.9003
 
 # Major changes

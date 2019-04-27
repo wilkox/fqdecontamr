@@ -4,7 +4,7 @@
 \alias{align_reads}
 \title{Align reads from a fastq file against a bowtie2 index}
 \usage{
-align_reads(fastq_file, index_path, species)
+align_reads(fastq_file, index_path, species, threads = 1)
 }
 \arguments{
 \item{fastq_file}{Path of the fastq file to be aligned}
@@ -12,6 +12,8 @@ align_reads(fastq_file, index_path, species)
 \item{index_path}{Path of the bowtie2 index}
 
 \item{species}{Name of the contaminant species}
+
+\item{threads}{How many threads should bowtie2 use (default 1)}
 }
 \description{
 Align reads from a fastq file against a bowtie2 index

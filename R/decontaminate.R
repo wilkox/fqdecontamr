@@ -6,13 +6,20 @@
 #' @param index_dir Directory in which to store downloaded genomes and bowtie2
 #' indices
 #' @param out_file Path to which the filtered fastq should be written
+#' @param threads How many threads should bowtie2 use when aligning (default 1)
 #'
 #' @return Returns a [tibble][tibble::tibble-package] of reads that have been
 #' removed and their taxonomic assignments
 #'
 #' @importFrom tibble tibble
 #' @export
-decontaminate <- function(fastq_file, decontam_file, index_dir, out_file) {
+decontaminate <- function(
+  fastq_file,
+  decontam_file,
+  index_dir,
+  out_file,
+  threads = 1
+) {
 
   # Load and tidy the decontam output
   message("Loading decontam output...")
@@ -42,7 +49,7 @@ decontaminate <- function(fastq_file, decontam_file, index_dir, out_file) {
   contaminant_reads <- purrr::map2_dfr(
     contaminants$index_path,
     contaminants$species,
-    ~ align_reads(fastq_file, .x, .y)
+    ~ align_reads(fastq_file, .x, .y, threads = threads)
   )
 
   # Stop if out file exists

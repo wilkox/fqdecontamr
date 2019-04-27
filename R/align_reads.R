@@ -3,7 +3,8 @@
 #' @param fastq_file Path of the fastq file to be aligned
 #' @param index_path Path of the bowtie2 index
 #' @param species Name of the contaminant species
-align_reads <- function(fastq_file, index_path, species) {
+#' @param threads How many threads should bowtie2 use (default 1)
+align_reads <- function(fastq_file, index_path, species, threads = 1) {
 
   # Skip if index is missing
   if (is.na(index_path)) {
@@ -19,7 +20,17 @@ align_reads <- function(fastq_file, index_path, species) {
   message("Running bowtie2 alignment against ", index_path)
   alignment <- readr::read_tsv(system2(
     "bowtie2",
-    args = c("-x", index_path, "-U", fastq_file, "--no-unal", "--no-hd", "--no-sq"),
+    args = c(
+      "-x",
+      index_path,
+      "-U",
+      fastq_file,
+      "--no-unal",
+      "--no-hd",
+      "--no-sq",
+      "-p",
+      threads
+    ),
     stdout = TRUE
   ), col_names = c(
     "read",
