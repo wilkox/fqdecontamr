@@ -1,3 +1,11 @@
+# v0.0.0.9005
+
+# Minor changes
+
+- Slight change to processing of bowtie2 alignment output to work around
+  bowtie2 error
+- Change to biomartr version requirement due to strange versioning of biomartr
+
 # v0.0.0.9004
 
 # Major changes

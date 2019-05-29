@@ -18,21 +18,21 @@ align_reads <- function(fastq_file, index_path, species, threads = 1) {
 
   # Run bowtie2 alignment of reads against index, capturing output
   message("Running bowtie2 alignment against ", index_path)
-  alignment <- readr::read_tsv(system2(
-    "bowtie2",
-    args = c(
-      "-x",
-      index_path,
-      "-U",
-      fastq_file,
-      "--no-unal",
-      "--no-hd",
-      "--no-sq",
-      "-p",
-      threads
-    ),
-    stdout = TRUE
-  ), col_names = c(
+  outfile <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = "")
+  system2("bowtie2", args = c(
+    "-x",
+    index_path,
+    "-U",
+    fastq_file,
+    "--no-unal",
+    "--no-hd",
+    "--no-sq",
+    "-p",
+    threads,
+    "-S",
+    outfile
+  ))
+  alignment <- readr::read_tsv(outfile, col_names = c(
     "read",
     "flags",
     "reference_seq",
@@ -54,6 +54,7 @@ align_reads <- function(fastq_file, index_path, species, threads = 1) {
     "opt8",
     "opt9"
   ))
+  fs::file_delete(outfile)
 
   # Return reads that aligned
   reads <- tibble::tibble(read = alignment$read)
