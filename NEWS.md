@@ -1,3 +1,9 @@
+# v0.0.0.9006
+
+## Bug fixes
+
+- Fix error when bowtie2 returns no alignments
+
 # v0.0.0.9005
 
 # Minor changes

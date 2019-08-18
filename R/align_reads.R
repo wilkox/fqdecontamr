@@ -32,6 +32,10 @@ align_reads <- function(fastq_file, index_path, species, threads = 1) {
     "-S",
     outfile
   ))
+  if (fs::is_file_empty(outfile)) {
+    message("No reads aligned for this query")
+    return()
+  }
   alignment <- readr::read_tsv(outfile, col_names = c(
     "read",
     "flags",
