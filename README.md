@@ -1,5 +1,7 @@
 
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle: deprecated](https://img.shields.io/badge/lifecycle-deprecated-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#deprecated)
+
+**This package is deprecated and no longer maintained. To identify contaminants, consider [decontam](https://bioconductor.org/packages/decontam/).**
 
 fqdecontamr filters fastq files to remove reads identified as potential
 contaminants by [decontam](https://benjjneb.github.io/decontam/).
